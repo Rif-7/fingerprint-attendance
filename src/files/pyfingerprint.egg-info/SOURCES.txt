@@ -1,0 +1,11 @@
+MANIFEST.in
+README.md
+setup.py
+../LICENSE
+files/pyfingerprint/__init__.py
+files/pyfingerprint/pyfingerprint.py
+files/pyfingerprint.egg-info/PKG-INFO
+files/pyfingerprint.egg-info/SOURCES.txt
+files/pyfingerprint.egg-info/dependency_links.txt
+files/pyfingerprint.egg-info/requires.txt
+files/pyfingerprint.egg-info/top_level.txt
