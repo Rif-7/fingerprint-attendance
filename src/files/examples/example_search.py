@@ -18,7 +18,7 @@ from pyfingerprint.pyfingerprint import FINGERPRINT_CHARBUFFER1
 
 ## Tries to initialize the sensor
 try:
-    f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
+    f = PyFingerprint('COM3', 57600, 0xFFFFFFFF, 0x00000000)
 
     if ( f.verifyPassword() == False ):
         raise ValueError('The given fingerprint sensor password is wrong!')
