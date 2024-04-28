@@ -57,6 +57,8 @@ print("Semester: " + response["semester"])
 print("\n")
 
 
+input("Click enter to continue.")
+
 ## Tries to enroll new finger
 try:
     print('Place your finger on the sensor.')
