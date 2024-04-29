@@ -41,48 +41,55 @@ if get_todays.lower() != "n":
 
 exam = input("Enter exam name: ")
 
-## Tries to search the finger and calculate hash
-try:
-    print('Place your finger on the sensor.')
+def mark_attendance():
 
-    ## Wait that finger is read
-    while ( f.readImage() == False ):
-        pass
+    ## Tries to search the finger and calculate hash
+    try:
+        print('\nPlace your finger on the sensor.')
 
-    ## Converts read image to characteristics and stores it in charbuffer 1
-    f.convertImage(FINGERPRINT_CHARBUFFER1)
+        ## Wait that finger is read
+        while ( f.readImage() == False ):
+            pass
 
-    ## Searchs template
-    result = f.searchTemplate()
+        ## Converts read image to characteristics and stores it in charbuffer 1
+        f.convertImage(FINGERPRINT_CHARBUFFER1)
 
-    positionNumber = result[0]
-    accuracyScore = result[1]
+        ## Searchs template
+        result = f.searchTemplate()
 
-    if ( positionNumber == -1 ):
-        print('No match found!')
-        exit(0)
-    else:
-        print('Found template at position #' + str(positionNumber))
-        print('The accuracy score is: ' + str(accuracyScore))
-        print("\n")
+        positionNumber = result[0]
+        accuracyScore = result[1]
+
+        if ( positionNumber == -1 ):
+            print('No match found!')
+            return
+        else:
+            print('Found template at position #' + str(positionNumber))
+            print('The accuracy score is: ' + str(accuracyScore))
+            print("\n")
 
 
-    ## Loads the found template to charbuffer 1
-    f.loadTemplate(positionNumber, FINGERPRINT_CHARBUFFER1)
+        ## Loads the found template to charbuffer 1
+        f.loadTemplate(positionNumber, FINGERPRINT_CHARBUFFER1)
 
-    response = requests.post(f"{backendURL}/exam/fingerprint/{exam}/{positionNumber}").json()
-    if response.get("error", False):
-        print("ERROR: ")
-        print(response["error"])
+        response = requests.post(f"{backendURL}/exam/fingerprint/{exam}/{positionNumber}").json()
+        if response.get("error", False):
+            print("ERROR: ")
+            print(response["error"])
+            return
+        
+        print(response["success"])
+        print(f"Name: {response['student']['name']}")
+        print(f"Roll Number: {response['student']['rollno']}")
+        print(f"Time: {response['student']['time']}")
+
+
+    except Exception as e:
+        print('Operation failed!')
+        print('Exception message: ' + str(e))
         exit(1)
-    
-    print(response["success"])
-    print(f"Name: {response['student']['name']}")
-    print(f"Roll Number: {response['student']['rollno']}")
-    print(f"Time: {response['student']['time']}")
 
-
-except Exception as e:
-    print('Operation failed!')
-    print('Exception message: ' + str(e))
-    exit(1)
+readNextFinger = "Y"
+while readNextFinger.lower() == "y":
+    mark_attendance()
+    readNextFinger = input("Do you want to continue? (Y/N) ")
